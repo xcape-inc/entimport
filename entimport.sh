@@ -47,4 +47,4 @@ if [[ 'aarch64' == "${ARCH}" ]]; then
   ARCH=arm64
 fi
 
-exec "${SCRIPT_DIR}/entimport-${ARCH}" "$@"
+exec "${SCRIPT_DIR}/entimport-linux-${ARCH}" "$@"

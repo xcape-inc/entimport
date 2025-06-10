@@ -1,16 +1,17 @@
 BINARY_NAME=entimport
 BINARY_VERSION ?= 0.0.0
 ARCH := $(shell uname -m)
+MAIN_FILE=cmd/entimport/entimport.go
 
 .PHONY: run build build_all clean ${BINARY_NAME}-linux-x86_64 ${BINARY_NAME}-linux-aarch64 docker
 
 ${BINARY_NAME}-linux-amd64:
-	CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -ldflags="-extldflags '-static' -X 'main.Version=v${BINARY_VERSION}'" -o ${BINARY_NAME}-linux-amd64 cmd/server/main.go
+	CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -ldflags="-extldflags '-static' -X 'main.Version=v${BINARY_VERSION}'" -o ${BINARY_NAME}-linux-amd64 ${MAIN_FILE}
 
 ${BINARY_NAME}-linux-x86_64: ${BINARY_NAME}-linux-amd64
 
 ${BINARY_NAME}-linux-arm64:
-	CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -ldflags="-extldflags '-static' -X 'main.Version=v${BINARY_VERSION}'" -o ${BINARY_NAME}-linux-arm64 cmd/server/main.go
+	CGO_ENABLED=0 GOARCH=arm64 GOOS=linux go build -ldflags="-extldflags '-static' -X 'main.Version=v${BINARY_VERSION}'" -o ${BINARY_NAME}-linux-arm64 ${MAIN_FILE}
 
 ${BINARY_NAME}-linux-aarch64: ${BINARY_NAME}-linux-arm64
 

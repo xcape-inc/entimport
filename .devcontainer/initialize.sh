@@ -40,6 +40,6 @@ fi
 pwd
 ls -la
 go get ./...
-if [[ ! -e .env ]]; then
-    cp -a env.example .env
-fi
+#if [[ ! -e .env ]]; then
+#    cp -a env.example .env
+#fi
