@@ -1,4 +1,4 @@
-module ariga.io/entimport
+module github.com/xcape-inc/entimport
 
 go 1.23.0
 
