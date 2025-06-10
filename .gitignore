@@ -1,0 +1,10 @@
+planning.md
+/.env
+/.env.*
+/entimport-*
+/.docker/db
+/.docker/cmd
+/.docker/entimport-*
+/entimport_*.tar
+.cursor*
+

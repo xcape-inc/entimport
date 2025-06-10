@@ -1,0 +1,26 @@
+services:
+  devcontainer:
+    image: ghcr.io/xcape-inc/entimport/devcontainer:local
+    build:
+      dockerfile: ".devcontainer/Dockerfile"
+      args:
+        # Update the VARIANT arg to pick a version of Go: 1, 1.19, 1.18
+        # Append -bullseye or -buster to pin to an OS version.
+        # Use -bullseye variants on local arm64/Apple Silicon.
+        VARIANT": "1.23-bullseye"
+        # Options
+        NODE_VERSION: "lts/*"
+      context: ..
+    volumes:
+      - ..:/workspace:delegated
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker-host.sock
+    cap_add:
+      - SYS_PTRACE
+      - SYS_MODULE
+    security_opt:
+      - seccomp:unconfined
+    init: true
+  # Define the database service
+

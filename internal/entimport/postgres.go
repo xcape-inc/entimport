@@ -2,8 +2,11 @@ package entimport
 
 import (
 	"context"
+	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"strings"
 
 	"ariga.io/atlas/sql/postgres"
 	"ariga.io/atlas/sql/schema"
@@ -54,8 +57,42 @@ func (p *Postgres) SchemaMutations(ctx context.Context) ([]schemast.Mutator, err
 	return schemaMutations(p.field, tables)
 }
 
+type Strings []string
+
+func (s *Strings) Scan(v any) (err error) {
+	switch v := v.(type) {
+	case nil:
+	case []byte:
+		err = s.scan(string(v))
+	case string:
+		err = s.scan(v)
+	default:
+		err = fmt.Errorf("unexpected type %T", v)
+	}
+	return
+}
+
+func (s *Strings) scan(v string) error {
+	if v == "" {
+		return nil
+	}
+	if l := len(v); l < 2 || v[0] != '{' && v[l-1] != '}' {
+		return fmt.Errorf("unexpected array format %q", v)
+	}
+	*s = strings.Split(v[1:len(v)-1], ",")
+	return nil
+}
+
+func (s Strings) Value() (driver.Value, error) {
+	return "{" + strings.Join(s, ",") + "}", nil
+}
+
 func (p *Postgres) field(column *schema.Column) (f ent.Field, err error) {
 	name := column.Name
+	var textType schema.Type = &schema.StringType{T: "text", Size: 0, Attrs: []schema.Attr{}}
+	typeX := reflect.TypeOf(textType)
+	typeY := reflect.TypeOf(column.Type.Type)
+
 	switch typ := column.Type.Type.(type) {
 	case *schema.BinaryType:
 		f = field.Bytes(name)
@@ -79,7 +116,50 @@ func (p *Postgres) field(column *schema.Column) (f ent.Field, err error) {
 		f = p.convertSerial(typ, name)
 	case *postgres.UUIDType:
 		f = field.UUID(name, uuid.New())
+	/*case "&{%!q(*schema.StringType=&{text 0 []}) \"text[]\"}":*/
+	//f = field.UUID(name, uuid.New())
+	case *postgres.ArrayType:
+		arrayTypeInstance := column.Type.Type.(*postgres.ArrayType)
+		
+		switch arrtyp := arrayTypeInstance.Underlying().(type) {
+		/*case *schema.BinaryType:
+			f = field.Bytes(name)
+		case *schema.BoolType:
+			f = field.Bool(name)
+		case *schema.DecimalType:
+			f = field.Float(name)
+		case *schema.EnumType:
+			f = field.Enum(name).Values(typ.Values...)
+		case *schema.FloatType:
+			f = p.convertFloat(typ, name)
+		case *schema.IntegerType:
+			f = p.convertInteger(typ, name)
+		case *schema.JSONType:
+			f = field.JSON(name, json.RawMessage{})*/
+		case *schema.StringType:
+			f = field.Other(name, Strings{}).
+				SchemaType(map[string]string{
+					dialect.Postgres: arrayTypeInstance.T,
+					dialect.SQLite:   "json",
+					dialect.MySQL:    "blob",
+				})
+		/*case *schema.TimeType:
+			f = field.Time(name)
+		case *postgres.SerialType:
+			f = p.convertSerial(typ, name)
+		case *postgres.UUIDType:
+			f = field.UUID(name, uuid.New())*/
+		default:
+			fmt.Println("textType is of type: ", typeX)
+			fmt.Println("column.Type.Type is of type: ", typeY)
+			fmt.Println("data is of type int with value: ", typ)
+			fmt.Println("item is of type int with value: ", arrtyp)
+			return nil, fmt.Errorf("entimport: unsupported array item type %q for column %v", arrtyp, column.Name)
+		}
 	default:
+		fmt.Println("textType is of type: ", typeX)
+		fmt.Println("column.Type.Type is of type: ", typeY)
+		fmt.Println("data is of type int with value: ", typ)
 		return nil, fmt.Errorf("entimport: unsupported type %q for column %v", typ, column.Name)
 	}
 	applyColumnAttributes(f, column)
