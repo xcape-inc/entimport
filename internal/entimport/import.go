@@ -23,7 +23,7 @@ const (
 	from
 )
 
-var joinTableErr = errors.New("entimport: join tables must be inspected with ref tables - append `tables` flag")
+var errJoinTable = errors.New("entimport: join tables must be inspected with ref tables - append `tables` flag")
 
 type (
 	edgeDir int
@@ -204,11 +204,11 @@ func upsertManyToMany(mutations map[string]schemast.Mutator, table *schema.Table
 	}
 	nodeA, ok := mutations[tableA.Name].(*schemast.UpsertSchema)
 	if !ok {
-		return joinTableErr
+		return errJoinTable
 	}
 	nodeB, ok := mutations[tableB.Name].(*schemast.UpsertSchema)
 	if !ok {
-		return joinTableErr
+		return errJoinTable
 	}
 	opts.refName = tableName(nodeB.Name)
 	upsertRelation(nodeA, nodeB, opts)
