@@ -238,12 +238,6 @@ jobs:
           name: ${{ env.BINARY_NAME }}-arm64
           path: .docker
 
-      - name: Copy in the migrations
-        run: |
-          cp -a db .docker/db
-          mkdir .docker/cmd
-          cp -a cmd/client .docker/cmd/client
-
       # Add some more possible tags. Right now we have commit short-sha, branch name, semver component from the commit tag
       # This adds the value of BUILD_VER from above (eg. 1.0.1a2) and latest is this is the main branch
       - name: Compute image tags
