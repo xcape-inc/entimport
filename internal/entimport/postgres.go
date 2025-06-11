@@ -117,10 +117,10 @@ func (p *Postgres) field(column *schema.Column) (f ent.Field, err error) {
 	case *postgres.UUIDType:
 		f = field.UUID(name, uuid.New())
 	/*case "&{%!q(*schema.StringType=&{text 0 []}) \"text[]\"}":*/
-	//f = field.UUID(name, uuid.New())
+	// f = field.UUID(name, uuid.New())
 	case *postgres.ArrayType:
 		arrayTypeInstance := column.Type.Type.(*postgres.ArrayType)
-		
+
 		switch arrtyp := arrayTypeInstance.Underlying().(type) {
 		/*case *schema.BinaryType:
 			f = field.Bytes(name)

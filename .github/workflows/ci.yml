@@ -135,7 +135,7 @@ jobs:
       - name: Run Go linters
         uses: golangci/golangci-lint-action@v8
         with:
-          args: --verbose --enable whitespace,gocritic,goimports
+          args: --verbose --enable whitespace,gocritic
   unit:
     runs-on: ubuntu-latest
     steps:
