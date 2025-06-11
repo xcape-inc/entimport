@@ -148,7 +148,7 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-unit-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Run tests
@@ -193,7 +193,7 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-integration-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Run integration tests
