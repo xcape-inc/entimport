@@ -122,7 +122,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.BINARY_NAME }}-arm64
-          path: $${{ env.BINARY_NAME }}-v${{ steps.get_versions.outputs.build_version }}-linux-arm64
+          path: ${{ env.BINARY_NAME }}-v${{ steps.get_versions.outputs.build_version }}-linux-arm64
           retention-days: 5
 
   # This workflow contains a single job called "build"
