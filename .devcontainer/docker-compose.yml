@@ -7,7 +7,7 @@ services:
         # Update the VARIANT arg to pick a version of Go: 1, 1.19, 1.18
         # Append -bullseye or -buster to pin to an OS version.
         # Use -bullseye variants on local arm64/Apple Silicon.
-        VARIANT": "1.23-bullseye"
+        VARIANT": "1.24-bullseye"
         # Options
         NODE_VERSION: "lts/*"
       context: ..
