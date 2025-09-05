@@ -56,7 +56,7 @@ jobs:
         run: echo ${{ steps.uidgid.outputs.uid_gid }}
 
       - name: Setup go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: '^1.24.3' # The Go version to download (if necessary) and use.
 
@@ -109,7 +109,7 @@ jobs:
         run: echo ${{ steps.uidgid.outputs.uid_gid }}
 
       - name: Setup go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: '^1.24.3' # The Go version to download (if necessary) and use.
 
@@ -129,7 +129,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: '^1.24.3'
       - name: Run Go linters
@@ -140,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: '^1.24.3'
       - name: Run tests
@@ -177,7 +177,7 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: '^1.24.3'
       - name: Run integration tests
