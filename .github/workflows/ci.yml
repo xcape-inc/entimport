@@ -287,14 +287,14 @@ jobs:
             org.opencontainers.image.ref.name=${{ github.ref }}
 
       - name: Download Binaries (amd64)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         id: dl_binary_amd64
         with:
           name: ${{ env.BINARY_NAME }}-amd64
           path: .docker
 
       - name: Download Binaries (arm64)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         id: dl_binary_arm64
         with:
           name: ${{ env.BINARY_NAME }}-arm64
