@@ -66,7 +66,7 @@ jobs:
           make ${BINARY_NAME}-linux-amd64 BINARY_VERSION=${{ steps.get_versions.outputs.build_version }} && mv ${BINARY_NAME}-linux-amd64 ${BINARY_NAME}-v${{ steps.get_versions.outputs.build_version }}-linux-amd64
 
       - name: Store image artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ env.BINARY_NAME }}-amd64
           path: ${{ env.BINARY_NAME }}-v${{ steps.get_versions.outputs.build_version }}-linux-amd64
@@ -119,7 +119,7 @@ jobs:
           make ${BINARY_NAME}-linux-arm64 BINARY_VERSION=${{ steps.get_versions.outputs.build_version }} && mv ${BINARY_NAME}-linux-arm64 ${BINARY_NAME}-v${{ steps.get_versions.outputs.build_version }}-linux-arm64
 
       - name: Store image artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ env.BINARY_NAME }}-arm64
           path: ${{ env.BINARY_NAME }}-v${{ steps.get_versions.outputs.build_version }}-linux-arm64
